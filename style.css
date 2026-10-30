@@ -1,0 +1,193 @@
+
+:root {
+  --sheet-font: 'Gill Sans MT', 'Noto Sans TC', sans-serif;
+}
+
+@font-face {
+  font-family: 'Gill Sans MT';
+  src: local('Gill Sans MT Bold'),
+       local('GillSansMT-Bold'),
+       local('Gill Sans Bold'),
+       local('Gill Sans MT'),
+       local('GillSansMT'),
+       url('Gill Sans MT.ttf') format('truetype'),
+       url('./Gill Sans MT.ttf') format('truetype'),
+       url('fonts/Gill Sans MT.ttf') format('truetype');
+  font-weight: 700 900;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Gill Sans MT';
+  src: local('Gill Sans MT'),
+       local('GillSansMT'),
+       local('Gill Sans'),
+       url('Gill Sans MT.ttf') format('truetype'),
+       url('./Gill Sans MT.ttf') format('truetype'),
+       url('fonts/Gill Sans MT.ttf') format('truetype');
+  font-weight: 100 600;
+  font-style: normal;
+  font-display: swap;
+}
+
+#a4-sheet,
+.a4-sheet-clone {
+  font-family: var(--sheet-font);
+  font-weight: 500;
+  width: 794px;
+  height: 1123px;
+  min-width: 794px;
+  min-height: 1123px;
+  max-width: 794px;
+  max-height: 1123px;
+  background-color: #ffffff;
+  color: #111827;
+  box-sizing: border-box;
+  position: relative;
+  overflow: hidden;
+  user-select: none;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: geometricPrecision;
+  font-kerning: normal;
+  font-synthesis: weight style;
+}
+
+#a4-sheet *,
+.a4-sheet-clone * {
+  box-sizing: border-box;
+  text-rendering: geometricPrecision;
+  -webkit-font-smoothing: antialiased;
+  font-synthesis: weight style;
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
+
+/* 保護站點圓圈、巴士轉乘計劃二維碼與全欄連續路線 SVG 在導出時維持精確幾何比例 */
+.stop-node-svg,
+.bbi-qr-svg {
+  display: block;
+  flex-shrink: 0;
+  aspect-ratio: 1 / 1;
+  overflow: visible;
+}
+
+.col-continuous-track-svg {
+  display: block;
+  pointer-events: none;
+  overflow: visible;
+}
+
+body {
+  font-family: var(--sheet-font);
+  background-color: #0f172a;
+  color: #f8fafc;
+  overflow-x: hidden;
+}
+
+/* Custom Scrollbars for sleek UI */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: rgba(15, 23, 42, 0.4);
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(100, 116, 139, 0.6);
+  border-radius: 9999px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(148, 163, 184, 0.9);
+}
+
+#a4-sheet {
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.65);
+  transform-origin: top center;
+}
+
+/* Fix badge & text vertical alignment so CJK + Latin text inside badges never sits too high */
+.sheet-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 1 !important;
+  vertical-align: middle;
+  box-sizing: border-box;
+}
+
+.sheet-text-fix {
+  position: relative;
+  display: inline-block;
+  line-height: 1.14;
+  transform: translateY(var(--export-text-offset, 0px));
+}
+
+.sheet-badge > .sheet-text-fix {
+  display: block;
+  line-height: 1 !important;
+  transform: translateY(calc(var(--export-text-offset, 0px) + 0.4px));
+}
+
+/* Stop Marker SVG strict aspect ratio so nodes never flatten */
+.stop-node-svg {
+  display: block;
+  flex-shrink: 0;
+  aspect-ratio: 1 / 1;
+  overflow: visible;
+}
+
+/* Interactive hover ring on A4 preview elements */
+.preview-clickable {
+  cursor: pointer;
+  transition: outline 0.12s ease;
+}
+.preview-clickable:hover {
+  outline: 1.5px dashed rgba(59, 130, 246, 0.75);
+  outline-offset: 1px;
+}
+/* Disable hover outline during export */
+.exporting-clean .preview-clickable:hover {
+  outline: none !important;
+}
+
+/* Print Media Rules for Direct Native A4 PDF Printing */
+@media print {
+  @page {
+    size: A4 portrait;
+    margin: 0;
+  }
+  body {
+    background: #ffffff !important;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+  #editor-sidebar,
+  #top-navbar,
+  #workspace-toolbar,
+  #toast-container {
+    display: none !important;
+  }
+  #main-workspace {
+    padding: 0 !important;
+    margin: 0 !important;
+    overflow: visible !important;
+    display: block !important;
+    background: none !important;
+  }
+  #a4-scale-wrapper {
+    transform: none !important;
+    width: 210mm !important;
+    height: 297mm !important;
+    margin: 0 !important;
+  }
+  #a4-sheet {
+    width: 210mm !important;
+    height: 297mm !important;
+    max-width: none !important;
+    max-height: none !important;
+    box-shadow: none !important;
+    print-color-adjust: exact !important;
+    -webkit-print-color-adjust: exact !important;
+  }
+}
